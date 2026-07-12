@@ -15,34 +15,30 @@ async function sendOtpEmail(email, otp) {
 }
 
 const electionLabels = {
-  university: {
+  University: {
     idLabel: "Roll Number",
     message: "Please use your university Roll Number during registration.",
   },
 
-  college: {
-    idLabel: "Roll Number",
-    message: "Please use your college Roll Number during registration.",
-  },
-
-  corporate: {
-    idLabel: "Employee ID",
-    message: "Please use your Employee ID during registration.",
-  },
-
-  organization: {
+  Organization: {
     idLabel: "Member ID",
     message: "Please use your Member ID during registration.",
   },
 
-  society: {
-    idLabel: "Membership ID",
-    message: "Please use your Membership ID during registration.",
-  },
-
-  government: {
+  "State Assembly": {
     idLabel: "Voter ID",
     message: "Please use your Voter ID during registration.",
+  },
+
+  "Municipal Corporation": {
+    idLabel: "Voter ID",
+    message: "Please use your Voter ID during registration.",
+  },
+
+  local: {
+    idLabel: "Identification Number",
+    message:
+      "Please use the identification number provided by the election administrator.",
   },
 
   default: {
