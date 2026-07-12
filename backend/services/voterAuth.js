@@ -1,5 +1,5 @@
 const { getElectionStatus } = require("../models/functions");
-const voterAuthModel = require("../models/voterAuth");
+const voterAuthModel = require("../models/VoterAuth");
 const transporter = require("../config/mail");
 const otpStore = require("../utils/otpStore");
 const { generateOtp, saveOtp } = require("../utils/otp");
