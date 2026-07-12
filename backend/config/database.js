@@ -9,13 +9,17 @@ const pool = mysql.createPool({
   waitForConnections: true,
   connectionLimit: 10,
   queueLimit: 0,
+  ssl: {
+    ca: process.env.DB_CA_CERT,
+    rejectUnauthorized: true,
+  },
 });
 
 const promisePool = pool.promise();
 
 const testConnection = async () => {
   try {
-    const [rows] = await promisePool.execute("SELECT 1");
+    await promisePool.execute("SELECT 1");
     console.log("Database connected successfully");
   } catch (error) {
     console.error("Database connection failed:", error.message);
