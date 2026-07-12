@@ -81,6 +81,9 @@ app.use("/api/admins/elections", CandidateRouter);
 app.use("/api/admins/elections", ConstituencyRouter);
 app.use("/api/admins/elections", ElectionRouter);
 
+app.use("/voters", VoterRouter);
+app.use("/voters", voterAuthRouter);
+
 app.use((err, req, res, next) => {
   console.error("🔥 Global Error Caught:", err.stack);
   res.status(err.status || 500).json({
