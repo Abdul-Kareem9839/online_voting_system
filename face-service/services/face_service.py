@@ -1,8 +1,9 @@
+import os
 import time
 
 from scipy.spatial.distance import cosine
 
-THRESHOLD = 0.70
+THRESHOLD = float(os.getenv("THRESHOLD", "0.70"))
 
 
 def _load_deepface():
