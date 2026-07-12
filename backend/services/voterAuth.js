@@ -242,7 +242,7 @@ const verifyFace = async (voterId, image) => {
     };
   }
 
-  const faceResponse = await fetch("http://localhost:5001/verify-face", {
+  const faceResponse = await fetch("FACE_SERVICE_URL", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
