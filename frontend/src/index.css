@@ -1,0 +1,208 @@
+@import url("https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&family=Inter:wght@400;500;600&display=swap");
+@import "tailwindcss";
+
+:root {
+  --paper: #edeae3;
+  --surface: #faf8f3;
+  --surface-alt: #f2efe9;
+
+  --ink: #1c2541;
+  --text: #15191f;
+  --muted: #6b6a63;
+  --accent-gold: #b8915c;
+
+  --red: #9c2b2b;
+  --sage: #5c7461;
+
+  --border: #d8d4c8;
+  --border-light: #d1cfcc;
+
+  --shadow: 0 6px 18px rgba(28, 37, 65, 0.06);
+
+  --radius: 12px;
+}
+
+body {
+  user-select: none;
+  background-color: #edeae3;
+  color: #15191f;
+  min-height: 100vh;
+  font-family: "Inter", system-ui, sans-serif;
+}
+
+.font-body {
+  font-family: "Inter", system-ui, sans-serif;
+  color: #15191f;
+}
+
+.font-display {
+  font-family: "Source Serif 4", Georgia, serif;
+  color: #1c2541;
+}
+
+.text-ink {
+  color: var(--ink);
+}
+.text-paper {
+  color: var(--paper);
+}
+.text-muted {
+  color: var(--muted);
+}
+.text-accent {
+  color: var(--red);
+}
+.text-success {
+  color: var(--sage);
+}
+.text-accent-gold {
+  color: var(--accent-gold);
+}
+
+.bg-surface-alt {
+  background-color: var(--surface-alt);
+}
+
+.bg-ink {
+  background: var(--ink);
+}
+
+.bg-accent {
+  background: var(--red);
+}
+
+.bg-paper {
+  background: var(--paper);
+}
+
+.border-paper {
+  border: 1px solid var(--border);
+}
+
+.border-light {
+  border: 1px solid var(--border-light);
+}
+
+.card {
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.dashboard-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 1.5rem;
+}
+
+.dashboard-card:hover {
+  transform: translateY(-2px);
+
+  box-shadow: 0 10px 24px rgba(28, 37, 65, 0.08);
+}
+
+.section-divider {
+  border-bottom: 1px solid var(--border-light);
+
+  padding-bottom: 0.75rem;
+
+  margin-bottom: 1.25rem;
+}
+
+.quick-action {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 1.25rem; /* Required internal breathing spacing */
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+/* Functional interactions: Restrained to gentle border & text changes */
+.quick-action:hover {
+  background-color: #ffffff;
+  border-color: var(--ink);
+}
+
+/* Restrained utility variants matching structural workflows */
+.quick-action.navy-action:hover {
+  border-color: var(--ink);
+}
+.quick-action.sage-action:hover {
+  border-color: var(--sage);
+}
+.quick-action.red-action:hover {
+  border-color: var(--red);
+}
+
+.btn-primary {
+  @apply w-full py-3 rounded-xl font-medium;
+
+  background: var(--ink);
+
+  color: white;
+}
+
+.btn-primary:hover {
+  opacity: 0.92;
+}
+
+.btn-secondary {
+  @apply w-full py-3 rounded-xl font-medium;
+
+  background: var(--sage);
+
+  color: white;
+}
+
+.btn-danger {
+  @apply w-full py-3 rounded-xl font-medium;
+
+  background: var(--red);
+
+  color: white;
+}
+
+.inp {
+  @apply w-full p-3 rounded mb-4 outline-none transition-colors;
+  font-family: "Inter", system-ui, sans-serif;
+  background-color: #ffffff;
+  border: 1px solid #d8d4c8;
+  color: #1c2541;
+}
+
+.inp:focus {
+  border-color: var(--red);
+  box-shadow: 0 0 0 3px rgba(156, 43, 43, 0.08);
+}
+
+.btn {
+  @apply w-full py-3 rounded font-medium transition-opacity disabled:opacity-50;
+  font-family: "Inter", system-ui, sans-serif;
+  background-color: #1c2541;
+  color: #edeae3;
+}
+
+.btn:hover:not(:disabled) {
+  opacity: 0.9;
+  cursor: pointer;
+}
+
+.stub::before {
+  content: "";
+  position: absolute;
+  left: -1px;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background-image: repeating-linear-gradient(
+    to bottom,
+    #b8b4a8 0,
+    #b8b4a8 6px,
+    transparent 6px,
+    transparent 14px
+  );
+}

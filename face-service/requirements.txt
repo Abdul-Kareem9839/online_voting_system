@@ -1,0 +1,4 @@
+flask
+deepface
+numpy
+scipy
