@@ -38,11 +38,10 @@ app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ extended: true, limit: "50mb" }));
 
 const sessionStore = new MySQLStore({
-  host: process.env.DB_HOST,
-  port: process.env.DB_PORT || 3306,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_NAME,
+  uri: process.env.DATABASE_URL,
+  ssl: process.env.DB_CA_CERT
+    ? { ca: process.env.DB_CA_CERT.replace(/\\n/g, "\n") }
+    : undefined,
   clearExpired: true,
   checkExpirationInterval: 900000,
 });
@@ -86,7 +85,7 @@ app.use("/voters", VoterRouter);
 app.use("/voters", voterAuthRouter);
 
 app.use((err, req, res, next) => {
-  console.error("🔥 Global Error Caught:", err.stack);
+  console.error("🔥 Global Error Caught:", err.message, err.stack);
   res.status(err.status || 500).json({
     success: false,
     error:
