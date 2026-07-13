@@ -85,10 +85,18 @@ app.use((err, req, res, next) => {
 
 const PORT = process.env.PORT || 5000;
 
-initializeDatabase().then(() => {
-  app.listen(PORT, () => {
-    console.log(
-      `Server running in ${process.env.NODE_ENV || "development"} mode on port ${PORT}`,
+initializeDatabase()
+  .then(() => {
+    app.listen(PORT, () => {
+      console.log(
+        `Server running in ${process.env.NODE_ENV || "development"} mode on port ${PORT}`,
+      );
+    });
+  })
+  .catch((err) => {
+    console.error(
+      "Failed to initialize database, server startup aborted:",
+      err.message,
     );
+    process.exit(1);
   });
-});

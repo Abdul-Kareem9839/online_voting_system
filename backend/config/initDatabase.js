@@ -95,13 +95,9 @@ const seedDefaultAdmin = async () => {
 };
 
 const initializeDatabase = async () => {
-  try {
-    await createTables();
-    await seedDefaultAdmin();
-    console.log("Database schema initialized successfully.");
-  } catch (error) {
-    console.error("Database initialization failed:", error.message);
-  }
+  await createTables();
+  await seedDefaultAdmin();
+  console.log("Database schema initialized successfully.");
 };
 
 module.exports = { initializeDatabase };
