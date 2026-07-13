@@ -1,31 +1,39 @@
-const nodemailer = require("nodemailer");
+const brevo = require("@getbrevo/brevo");
 
-const transporterOptions = {};
-
-if (process.env.EMAIL_HOST) {
-  transporterOptions.host = process.env.EMAIL_HOST;
-  transporterOptions.port = Number(
-    process.env.EMAIL_PORT || (process.env.EMAIL_SECURE === "true" ? 465 : 587),
-  );
-  transporterOptions.secure = process.env.EMAIL_SECURE === "true";
-} else if (process.env.EMAIL_USER?.includes("@gmail.com")) {
-  transporterOptions.service = "gmail";
-  transporterOptions.secure = true;
-} else {
-  transporterOptions.host = process.env.EMAIL_HOST || "smtp.gmail.com";
-  transporterOptions.port = Number(process.env.EMAIL_PORT || 587);
-  transporterOptions.secure = false;
+if (!process.env.BREVO_API_KEY) {
+  console.error("BREVO_API_KEY is not defined");
 }
 
-transporterOptions.auth = {
-  user: process.env.EMAIL_USER,
-  pass: process.env.EMAIL_PASS,
-};
+const apiInstance = new brevo.TransactionalEmailsApi();
+apiInstance.setApiKey(
+  brevo.TransactionalEmailsApiApiKeys.apiKey,
+  process.env.BREVO_API_KEY,
+);
 
-const transporter = nodemailer.createTransport(transporterOptions);
+async function sendMail({ from, to, subject, html, text }) {
+  const sendSmtpEmail = new brevo.SendSmtpEmail();
+  sendSmtpEmail.sender = {
+    email: from || process.env.EMAIL_FROM || "civiconlinevoting@gmail.com",
+    name: process.env.EMAIL_FROM_NAME || "CivicVote",
+  };
+  sendSmtpEmail.to = [{ email: Array.isArray(to) ? to[0] : to }];
+  sendSmtpEmail.subject = subject;
+  sendSmtpEmail.textContent = text || "";
+  sendSmtpEmail.htmlContent = html || "";
 
-transporter.verify().catch((err) => {
-  console.error("Email transporter verification failed:", err.message);
-});
+  try {
+    const response = await apiInstance.sendTransacEmail(sendSmtpEmail);
+    return {
+      delivered: true,
+      id: response?.messageId || response?.body?.messageId,
+      message: response?.messageId ? "Email queued successfully" : "Email sent",
+    };
+  } catch (error) {
+    const message =
+      error.response?.body?.message || error.message || "Email delivery failed";
+    console.error("Brevo email error:", message);
+    return { delivered: false, reason: "send_failed", message };
+  }
+}
 
-module.exports = transporter;
+module.exports = { sendMail };
