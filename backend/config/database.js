@@ -40,3 +40,4 @@ const testConnection = async () => {
 testConnection();
 
 module.exports = promisePool;
+module.exports.rawPool = pool;

@@ -11,6 +11,7 @@ const passport = require("./config/passport");
 const session = require("express-session");
 const MySQLStore = require("express-mysql-session")(session);
 const { generalLimiter } = require("./middlewares/rateLimiter");
+const { pool } = require("./config/database");
 
 const RegistrationRouter = require("./routes/auth");
 const VoterRouter = require("./routes/voters");
@@ -37,14 +38,15 @@ app.use(morgan(process.env.NODE_ENV === "production" ? "combined" : "dev"));
 app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ extended: true, limit: "50mb" }));
 
-const sessionStore = new MySQLStore({
-  uri: process.env.DATABASE_URL,
-  ssl: process.env.DB_CA_CERT
-    ? { ca: process.env.DB_CA_CERT.replace(/\\n/g, "\n") }
-    : undefined,
-  clearExpired: true,
-  checkExpirationInterval: 900000,
-});
+const sessionStore = new MySQLStore({}, pool.promise());
+// const sessionStore = new MySQLStore({
+//   uri: process.env.DATABASE_URL,
+//   ssl: process.env.DB_CA_CERT
+//     ? { ca: process.env.DB_CA_CERT.replace(/\\n/g, "\n") }
+//     : undefined,
+//   clearExpired: true,
+//   checkExpirationInterval: 900000,
+// });
 
 if (process.env.NODE_ENV === "production") {
   app.set("trust proxy", 1);
