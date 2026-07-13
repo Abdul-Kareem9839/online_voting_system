@@ -1,6 +1,5 @@
 const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
-const bcrypt = require("bcrypt");
 const db = require("../config/database");
 const otpStore = require("../utils/otpStore");
 const { getVoterByEmail, getVoterById } = require("../models/Voter");
@@ -17,6 +16,8 @@ passport.use(
       try {
         const { email } = req.body;
 
+        console.log("Admin login attempt:", { admin_id, email, password });
+
         const [rows] = await db.query(
           `
           SELECT admin_id, username, email, password
@@ -26,7 +27,10 @@ passport.use(
           [admin_id],
         );
 
+        console.log("Database query result:", rows);
+
         if (rows.length === 0) {
+          console.log("Admin ID not found:", admin_id);
           return done(null, false, {
             message: "Invalid Admin ID",
           });
@@ -34,24 +38,35 @@ passport.use(
 
         const admin = rows[0];
 
+        console.log("Admin from DB:", {
+          admin_id: admin.admin_id,
+          email: admin.email,
+        });
+
         if (admin.email !== email) {
+          console.log("Email mismatch:", { expected: admin.email, got: email });
           return done(null, false, {
             message: "Invalid Email",
           });
         }
 
-        // Use bcrypt to compare passwords
-        const passwordMatch = await bcrypt.compare(password, admin.password);
-        if (!passwordMatch) {
+        if (password !== admin.password) {
+          console.log("Password mismatch:", {
+            expected: admin.password,
+            got: password,
+          });
           return done(null, false, {
             message: "Invalid password",
           });
         }
 
+        console.log("Admin login successful:", admin_id);
+
         admin.role = "admin";
 
         return done(null, admin);
       } catch (err) {
+        console.error("Auth error:", err);
         return done(err);
       }
     },
