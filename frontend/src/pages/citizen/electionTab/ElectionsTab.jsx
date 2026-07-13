@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { apiFetch } from "../../../../utils/apiFetch";
+import { apiFetch } from "../../../utils/apiFetch";
 import LiveElectionCard from "./components/LiveElectionCard";
 import UpcomingElectionCard from "./components/UpcomingElectionCard";
 import VotingInterface from "./components/VotingInterface";

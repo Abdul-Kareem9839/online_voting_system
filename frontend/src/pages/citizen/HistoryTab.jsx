@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { CheckCircle2, XCircle, Award, BarChart2, Loader2 } from "lucide-react";
-import { apiFetch } from "../../../utils/apiFetch";
+import { apiFetch } from "../../utils/apiFetch";
 
 const HistoryTab = ({ data }) => {
   const elections = data?.elections || [];

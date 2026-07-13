@@ -1,4 +1,4 @@
-import { API_URL } from "../config/api";
+import { API_URL } from "../../config/api";
 
 export async function apiFetch(path, options = {}) {
   const token = localStorage.getItem("token");

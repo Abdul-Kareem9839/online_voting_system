@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { apiFetch } from "../../../../utils/apiFetch";
+import { apiFetch } from "../../../utils/apiFetch";
 import {
   Plus,
   Play,

@@ -1,7 +1,7 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { Camera, Loader2, ShieldCheck, CheckCircle2, X } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
-import { apiFetch } from "../../../../../utils/apiFetch";
+import { apiFetch } from "../../../../utils/apiFetch";
 
 const FaceVerificationModal = ({
   onVerified,

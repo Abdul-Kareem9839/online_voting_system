@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { apiFetch } from "../../../../../utils/apiFetch";
+import { apiFetch } from "../../../../utils/apiFetch";
 
 export default function UploadVoters({ election_id }) {
   const [file, setFile] = useState(null);
