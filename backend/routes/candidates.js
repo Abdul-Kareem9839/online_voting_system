@@ -40,7 +40,6 @@ router.delete(
   async (req, res) => {
     try {
       const { candidate_id } = req.params;
-      console.log(candidate_id);
 
       const result = await deleteCandidate(candidate_id);
 

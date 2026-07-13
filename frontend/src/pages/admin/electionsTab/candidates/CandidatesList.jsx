@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Trash2, Plus, ArrowLeft } from "lucide-react";
 import AddCandidate from "./AddCandidate";
 import { API_URL } from "../../../../../config/api";
+import { apiFetch } from "../../../../utils/apiFetch";
 
 export default function CandidatesList({
   election_id,
@@ -16,9 +17,8 @@ export default function CandidatesList({
     try {
       setLoading(true);
 
-      const res = await fetch(
-        `${API_URL}/admins/elections/${election_id}/constituencies/${constituency_id}/candidates`,
-        { credentials: "include" },
+      const res = await apiFetch(
+        `/admins/elections/${election_id}/constituencies/${constituency_id}/candidates`,
       );
 
       const data = await res.json();
@@ -42,9 +42,11 @@ export default function CandidatesList({
       return;
 
     try {
-      const res = await fetch(
-        `${API_URL}/admins/elections/${election_id}/constituencies/${constituency_id}/candidates/${candidate_id}`,
-        { method: "DELETE", credentials: "include" },
+      const res = await apiFetch(
+        `/admins/elections/${election_id}/constituencies/${constituency_id}/candidates/${candidate_id}`,
+        {
+          method: "DELETE",
+        },
       );
 
       const data = await res.json();

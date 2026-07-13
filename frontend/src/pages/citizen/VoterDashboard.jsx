@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { API_URL } from "../../../config/api";
+import { apiFetch } from "../../utils/apiFetch";
 import {
   User,
   BarChart3,
@@ -53,16 +54,14 @@ const VoterDashboard = () => {
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const res = await fetch(`${API_URL}/auth/me`, {
-          credentials: "include",
-        });
+        const res = await apiFetch(`/auth/me`);
 
         if (!res.ok) {
           navigate("/voters/login");
           return;
         }
 
-        const data = await res.json();
+        await res.json();
       } catch (err) {
         navigate("/voters/login");
       }
@@ -76,9 +75,7 @@ const VoterDashboard = () => {
         setLoading(true);
         setError(null);
 
-        const response = await fetch(`${API_URL}/voters/dashboard`, {
-          credentials: "include",
-        });
+        const response = await apiFetch(`/voters/dashboard`);
 
         if (!response.ok) {
           const errorData = await response.json();

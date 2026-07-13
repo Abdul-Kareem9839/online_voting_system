@@ -1,3 +1,4 @@
+const { generateToken } = require("../utils/jwt");
 const voterAuthService = require("../services/voterAuth");
 
 const checkEligibility = async (req, res) => {
@@ -73,23 +74,22 @@ const register = async (req, res) => {
       return res.status(result.status).json(result);
     }
 
-    req.login(result.voterSession, (err) => {
-      if (err) {
-        return res.status(500).json({
-          success: false,
-          message: err.message,
-        });
-      }
+    const token = generateToken({
+      id: result.voterSession.voter_id,
+      role: "voter",
+      email: result.voterSession.email,
+    });
 
-      return res.status(200).json({
-        success: true,
-        message: "Registration completed successfully.",
-        voter: {
-          voter_id: result.voterSession.voter_id,
-          voter_name: result.voterSession.voter_name,
-          email: result.voterSession.email,
-        },
-      });
+    return res.status(200).json({
+      success: true,
+      message: "Registration completed successfully.",
+      token,
+      voter: {
+        voter_id: result.voterSession.voter_id,
+        voter_name: result.voterSession.voter_name,
+        email: result.voterSession.email,
+        role: result.voterSession.role,
+      },
     });
   } catch (err) {
     console.error(err);
@@ -149,16 +149,17 @@ const loginVerifyOtp = (passport) => {
         });
       }
 
-      voterAuthService.login(req, user, (err) => {
-        if (err) {
-          return next(err);
-        }
+      const token = generateToken({
+        id: user.voter_id,
+        role: "voter",
+        email: user.email,
+      });
 
-        return res.status(200).json({
-          success: true,
-          message: "Login successful",
-          voter: user,
-        });
+      return res.status(200).json({
+        success: true,
+        message: "Login successful",
+        token,
+        voter: user,
       });
     })(req, res, next);
   };

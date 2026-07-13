@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { API_URL } from "../../../config/api";
+import { apiFetch } from "../../utils/apiFetch";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -15,9 +16,10 @@ export default function Login() {
     const checkAuth = async () => {
       try {
         setErrorMsg("");
-        const res = await fetch(`${API_URL}/auth/me`, {
-          credentials: "include",
-        });
+        const token = localStorage.getItem("token");
+        if (!token) return;
+
+        const res = await apiFetch(`/auth/me`);
 
         if (res.status === 401) {
           return;
@@ -46,7 +48,7 @@ export default function Login() {
       setLoading(true);
       setErrorMsg("");
 
-      const res = await fetch(`${API_URL}/voters/login/send-otp`, {
+      const res = await apiFetch(`/voters/login/send-otp`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email }),
@@ -78,9 +80,8 @@ export default function Login() {
       setLoading(true);
       setErrorMsg("");
 
-      const res = await fetch(`${API_URL}/voters/login/verify-otp`, {
+      const res = await apiFetch(`/voters/login/verify-otp`, {
         method: "POST",
-        credentials: "include",
         headers: {
           "Content-Type": "application/json",
         },
@@ -95,6 +96,10 @@ export default function Login() {
       if (!res.ok) {
         setErrorMsg(data.message);
         return;
+      }
+
+      if (data.token) {
+        localStorage.setItem("token", data.token);
       }
 
       alert("Login successful");

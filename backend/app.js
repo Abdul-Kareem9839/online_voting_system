@@ -8,8 +8,6 @@ const app = express();
 const cors = require("cors");
 const morgan = require("morgan");
 const passport = require("./config/passport");
-const session = require("express-session");
-const MySQLStore = require("express-mysql-session")(session);
 const { generalLimiter } = require("./middlewares/rateLimiter");
 const { pool } = require("./config/database");
 
@@ -38,37 +36,11 @@ app.use(morgan(process.env.NODE_ENV === "production" ? "combined" : "dev"));
 app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ extended: true, limit: "50mb" }));
 
-const sessionStore = new MySQLStore({}, pool.promise());
-// const sessionStore = new MySQLStore({
-//   uri: process.env.DATABASE_URL,
-//   ssl: process.env.DB_CA_CERT
-//     ? { ca: process.env.DB_CA_CERT.replace(/\\n/g, "\n") }
-//     : undefined,
-//   clearExpired: true,
-//   checkExpirationInterval: 900000,
-// });
-
 if (process.env.NODE_ENV === "production") {
   app.set("trust proxy", 1);
 }
 
-app.use(
-  session({
-    store: sessionStore,
-    secret: process.env.SESSION_SECRET,
-    resave: false,
-    saveUninitialized: false,
-    cookie: {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
-      maxAge: 24 * 60 * 60 * 1000,
-    },
-  }),
-);
-
 app.use(passport.initialize());
-app.use(passport.session());
 
 app.use("/api", generalLimiter);
 

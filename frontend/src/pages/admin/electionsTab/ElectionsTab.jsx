@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { API_URL } from "../../../../config/api";
+import { apiFetch } from "../../../../utils/apiFetch";
 import {
   Plus,
   Play,
@@ -27,9 +27,7 @@ const ElectionsTab = ({ data }) => {
 
   const fetchElections = async () => {
     try {
-      const res = await fetch(`${API_URL}/admins/elections`, {
-        credentials: "include",
-      });
+      const res = await apiFetch(`/admins/elections`);
       const data = await res.json();
 
       if (!res.ok) throw new Error(data.message || "Failed to fetch elections");

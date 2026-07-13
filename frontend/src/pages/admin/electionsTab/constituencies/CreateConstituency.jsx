@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { API_URL } from "../../../../../config/api";
+import { apiFetch } from "../../../../utils/apiFetch";
 
 export default function CreateConstituency({
   onClose,
@@ -24,11 +25,10 @@ export default function CreateConstituency({
     try {
       setLoading(true);
 
-      const res = await fetch(
-        `${API_URL}/admins/elections/${election_id}/constituencies/create`,
+      const res = await apiFetch(
+        `/admins/elections/${election_id}/constituencies/create`,
         {
           method: "POST",
-          credentials: "include",
           headers: {
             "Content-Type": "application/json",
           },

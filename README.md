@@ -132,8 +132,11 @@ Create a `.env` file inside the backend folder and configure the required values
 - Frontend URL
 - Email credentials
 - Session secret
+- JWT secret (`JWT_SECRET`)
 
-Example configuration:
+If you need to override face-service defaults, create a `.env` file inside `face-service` as well.
+
+Example backend configuration:
 
 ```env
 DB_HOST=localhost
@@ -146,6 +149,15 @@ CLIENT_URL=http://localhost:5173
 EMAIL_USER=your_email@gmail.com
 EMAIL_PASS=your_email_app_password
 SESSION_SECRET=your_secret_key
+JWT_SECRET=your_jwt_secret_key
+```
+
+Example face-service configuration:
+
+```env
+PORT=5001
+FLASK_ENV=development
+THRESHOLD=0.70
 ```
 
 ## Running the Application

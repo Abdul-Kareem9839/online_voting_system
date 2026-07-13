@@ -34,7 +34,7 @@ router.post(
         election_id: electionId,
       });
     } catch (err) {
-      console.log("🔥 ROUTE ERROR:", err);
+      console.error("Election route error:", err);
 
       res.status(500).json({
         success: false,
@@ -48,10 +48,8 @@ router.post(
 router.get("/:election_id/edit", isAuthenticated, isAdmin, async (req, res) => {
   try {
     const { election_id } = req.params;
-    console.log(election_id);
 
     const election = await getElectionById(election_id);
-    console.log(election);
 
     if (!election) {
       return res.status(404).json({
@@ -65,6 +63,7 @@ router.get("/:election_id/edit", isAuthenticated, isAdmin, async (req, res) => {
       election,
     });
   } catch (err) {
+    console.error("Election edit route error:", err);
     res.status(500).json({
       success: false,
       error: err.message,
@@ -80,7 +79,6 @@ router.put(
   validateElection,
   async (req, res) => {
     try {
-      console.log(req.params);
       const { election_id } = req.params;
 
       const existing = await getElectionById(election_id);
@@ -106,7 +104,6 @@ router.put(
 // DELETE ELECTION
 router.delete("/:election_id", isAuthenticated, isAdmin, async (req, res) => {
   try {
-    console.log(req.params);
     const { election_id } = req.params;
 
     const existing = await getElectionById(election_id);
@@ -124,6 +121,7 @@ router.delete("/:election_id", isAuthenticated, isAdmin, async (req, res) => {
       message: "Election deleted successfully",
     });
   } catch (err) {
+    console.error("Election delete route error:", err);
     res.status(500).json({ success: false, error: err.message });
   }
 });

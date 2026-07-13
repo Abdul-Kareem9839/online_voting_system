@@ -10,10 +10,7 @@ export default function Header({ voterData }) {
 
   const handleLogout = async () => {
     try {
-      await fetch(`${API_URL}/auth/logout`, {
-        method: "POST",
-        credentials: "include",
-      });
+      localStorage.removeItem("token");
       navigate("/voters/login");
     } catch (err) {
       alert(err.message);

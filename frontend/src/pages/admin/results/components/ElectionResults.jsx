@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { CheckCircle, ArrowLeft, Search, Clock, Vote } from "lucide-react";
 import { API_URL } from "../../../../../config/api";
+import { apiFetch } from "../../../../utils/apiFetch";
 import ConstituencyCard from "./ConstituencyCard";
 
 const ElectionResults = ({ election, onBack, onViewConstituency }) => {
@@ -11,11 +12,8 @@ const ElectionResults = ({ election, onBack, onViewConstituency }) => {
   useEffect(() => {
     const fetchConstituencies = async () => {
       try {
-        const res = await fetch(
-          `${API_URL}/admins/elections/${election.election_id}/constituencies`,
-          {
-            credentials: "include",
-          },
+        const res = await apiFetch(
+          `/admins/elections/${election.election_id}/constituencies`,
         );
 
         const data = await res.json();

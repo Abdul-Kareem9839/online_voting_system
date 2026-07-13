@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { API_URL } from "../../../../../config/api";
+import { apiFetch } from "../../../../utils/apiFetch";
 
 export default function AddCandidate({
   election_id,
@@ -29,11 +30,10 @@ export default function AddCandidate({
     try {
       setLoading(true);
 
-      const res = await fetch(
-        `${API_URL}/admins/elections/${election_id}/constituencies/${constituency_id}/candidates/create`,
+      const res = await apiFetch(
+        `/admins/elections/${election_id}/constituencies/${constituency_id}/candidates/create`,
         {
           method: "POST",
-          credentials: "include",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             candidate_name: formData.candidate_name.trim(),

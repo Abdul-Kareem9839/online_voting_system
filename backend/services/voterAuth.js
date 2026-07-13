@@ -300,10 +300,6 @@ const loginSendOtp = async (email) => {
   };
 };
 
-const login = (req, user, callback) => {
-  req.login(user, callback);
-};
-
 module.exports = {
   checkEligibility,
   sendOtp,
@@ -311,5 +307,4 @@ module.exports = {
   register,
   verifyFace,
   loginSendOtp,
-  login,
 };

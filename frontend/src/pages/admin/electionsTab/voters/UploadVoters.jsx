@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { API_URL } from "../../../../../config/api";
+import { apiFetch } from "../../../../../utils/apiFetch";
 
 export default function UploadVoters({ election_id }) {
   const [file, setFile] = useState(null);
@@ -27,11 +27,10 @@ export default function UploadVoters({ election_id }) {
       const formData = new FormData();
       formData.append("csv_file", file);
 
-      const res = await fetch(
-        `${API_URL}/admins/elections/upload-voters/${election_id}`,
+      const res = await apiFetch(
+        `/admins/elections/upload-voters/${election_id}`,
         {
           method: "POST",
-          credentials: "include",
           body: formData,
         },
       );

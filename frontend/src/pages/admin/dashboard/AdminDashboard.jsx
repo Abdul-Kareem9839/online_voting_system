@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { BarChart3, Vote, Users, TrendingUp } from "lucide-react";
 import { API_URL } from "../../../../config/api";
+import { apiFetch } from "../../../utils/apiFetch";
 import OverviewTab from "../overviewTab/OverviewTab.jsx";
 import ElectionsTab from "../electionsTab/ElectionsTab.jsx";
 import ResultsTab from "../results/ResultsTab.jsx";
@@ -18,15 +19,15 @@ const AdminDashboard = () => {
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const res = await fetch(`${API_URL}/auth/me`, {
-          credentials: "include",
-        });
+        const token = localStorage.getItem("token");
+        if (!token) return;
 
+        const res = await apiFetch(`/auth/me`);
         if (res.status === 401) return;
 
         const data = await res.json();
 
-        if (data.user?.role == "admin") {
+        if (data.user?.role === "admin") {
           navigate("/admins/dashboard");
         }
       } catch (err) {
@@ -42,10 +43,7 @@ const AdminDashboard = () => {
       try {
         setLoading(true);
 
-        const res = await fetch(`${API_URL}/admins/dashboard`, {
-          credentials: "include",
-        });
-
+        const res = await apiFetch(`/admins/dashboard`);
         const data = await res.json();
 
         if (!res.ok) {

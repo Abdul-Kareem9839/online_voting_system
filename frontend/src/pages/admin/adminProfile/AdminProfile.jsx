@@ -1,7 +1,7 @@
 import { useState } from "react";
 import ProfileInfo from "./components/ProfileInfo";
 import { API_URL } from "../../../../config/api";
-
+import { apiFetch } from "../../../utils/apiFetch";
 
 export default function AdminProfile({ data }) {
   const [showPasswordForm, setShowPasswordForm] = useState(false);
@@ -35,18 +35,14 @@ export default function AdminProfile({ data }) {
     try {
       setSaving(true);
 
-      const res = await fetch(
-        `${API_URL}/admins/change-password`,
-        {
-          method: "PUT",
-          credentials: "include",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            old_password: passwords.old_password,
-            new_password: passwords.new_password,
-          }),
-        },
-      );
+      const res = await apiFetch(`/admins/change-password`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          old_password: passwords.old_password,
+          new_password: passwords.new_password,
+        }),
+      });
 
       const data = await res.json();
 

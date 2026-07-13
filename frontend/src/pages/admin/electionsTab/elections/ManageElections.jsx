@@ -1,5 +1,6 @@
 import { Edit3, Trash2, Eye } from "lucide-react";
 import { API_URL } from "../../../../../config/api";
+import { apiFetch } from "../../../../utils/apiFetch";
 
 export default function ManageElections({
   election,
@@ -20,10 +21,9 @@ export default function ManageElections({
     if (!confirmDelete) return;
 
     try {
-      const res = await fetch(
-        `${API_URL}/admins/elections/${election.election_id}`,
-        { method: "DELETE", credentials: "include" },
-      );
+      const res = await apiFetch(`/admins/elections/${election.election_id}`, {
+        method: "DELETE",
+      });
 
       const data = await res.json();
 

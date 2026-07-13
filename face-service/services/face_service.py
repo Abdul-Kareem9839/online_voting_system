@@ -1,8 +1,10 @@
 import os
+import logging
 import time
 
 from scipy.spatial.distance import cosine
 
+logger = logging.getLogger(__name__)
 THRESHOLD = float(os.getenv("THRESHOLD", "0.70"))
 
 
@@ -28,7 +30,6 @@ def register_face_embeddings(images):
 
     for index, img in enumerate(images):
         try:
-            start = time.time()
             result = DeepFace.represent(
                 img_path=img,
                 model_name="Facenet512",
@@ -36,9 +37,8 @@ def register_face_embeddings(images):
                 enforce_detection=False
             )
             embeddings.append(result[0]["embedding"])
-            print(f"Image {index + 1} processed in {time.time() - start:.2f} sec")
         except Exception as exc:
-            print(f"Error processing image {index + 1}: {exc}")
+            logger.error("Error processing image %d: %s", index + 1, exc)
             continue
 
     if len(embeddings) == 0:
@@ -73,8 +73,6 @@ def verify_face_image(image, stored_embeddings):
         similarities.append(similarity)
 
     best_similarity = max(similarities)
-    print(f"Best Similarity: {best_similarity:.4f}")
-    print(f"Threshold: {THRESHOLD}")
 
     if best_similarity >= THRESHOLD:
         return {

@@ -3,8 +3,6 @@ const db = require("../config/database");
 // CREATE ELECTION
 async function createElection(data) {
   try {
-    console.log("📥 Incoming data:", data);
-
     const { election_name, start_date, end_date, election_type, admin_id } =
       data;
 
@@ -17,8 +15,7 @@ async function createElection(data) {
 
     return result.insertId;
   } catch (err) {
-    console.log("🔥 MODEL ERROR:");
-    console.log(err);
+    console.error("Election model error:", err);
     throw err;
   }
 }

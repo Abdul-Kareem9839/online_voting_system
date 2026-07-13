@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { CheckCircle2, XCircle, Award, BarChart2, Loader2 } from "lucide-react";
-import { API_URL } from "../../../config/api";
+import { apiFetch } from "../../../utils/apiFetch";
 
 const HistoryTab = ({ data }) => {
   const elections = data?.elections || [];
@@ -33,9 +33,8 @@ const HistoryTab = ({ data }) => {
           throw new Error("Constituency profile not found.");
         }
 
-        const res = await fetch(
-          `${API_URL}/voters/elections/${electionId}/my-constituency-results`,
-          { credentials: "include" },
+        const res = await apiFetch(
+          `/voters/elections/${electionId}/my-constituency-results`,
         );
 
         const resData = await res.json();

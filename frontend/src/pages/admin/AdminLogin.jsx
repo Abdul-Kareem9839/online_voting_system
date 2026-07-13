@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { API_URL } from "../../../config/api";
+import { apiFetch } from "../../utils/apiFetch";
 
 export default function AdminLogin() {
   const navigate = useNavigate();
@@ -24,15 +25,16 @@ export default function AdminLogin() {
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const res = await fetch(`${API_URL}/auth/me`, {
-          credentials: "include",
-        });
+        const token = localStorage.getItem("token");
+        if (!token) return;
+
+        const res = await apiFetch(`/auth/me`);
 
         if (res.status === 401) return;
 
         const data = await res.json();
 
-        if (data.user?.role == "admin") {
+        if (data.user?.role === "admin") {
           navigate("/admins/dashboard");
         }
       } catch (err) {
@@ -48,9 +50,8 @@ export default function AdminLogin() {
       setLoading(true);
       setErrorMsg("");
 
-      const res = await fetch(`${API_URL}/admins/login`, {
+      const res = await apiFetch(`/admins/login`, {
         method: "POST",
-        credentials: "include",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
       });
@@ -59,6 +60,10 @@ export default function AdminLogin() {
       if (!res.ok) {
         setErrorMsg(data.message || `Login failed (${res.status})`);
         return;
+      }
+
+      if (data.token) {
+        localStorage.setItem("token", data.token);
       }
 
       navigate(`/admins/dashboard`);

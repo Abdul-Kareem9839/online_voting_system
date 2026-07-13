@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { API_URL } from "../../../../../config/api";
-
+import { apiFetch } from "../../../../utils/apiFetch";
 
 export default function EditElection({ election, onClose }) {
   const [saving, setSaving] = useState(false);
@@ -34,15 +34,11 @@ export default function EditElection({ election, onClose }) {
         end_date: formData.end_date.replace("T", " ") + ":00",
       };
 
-      const res = await fetch(
-        `${API_URL}/admins/elections/${election.election_id}`,
-        {
-          method: "PUT",
-          credentials: "include",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload),
-        },
-      );
+      const res = await apiFetch(`/admins/elections/${election.election_id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
 
       const data = await res.json();
 

@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { useState } from "react";
 import { API_URL } from "../../../../../config/api";
+import { apiFetch } from "../../../../utils/apiFetch";
 
 export default function CreateElection({ onClose }) {
   const [loading, setLoading] = useState(false);
@@ -40,9 +41,8 @@ export default function CreateElection({ onClose }) {
         election_type: formData.election_type,
       };
 
-      const res = await fetch(`${API_URL}/admins/elections/create`, {
+      const res = await apiFetch(`/admins/elections/create`, {
         method: "POST",
-        credentials: "include",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });

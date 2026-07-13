@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Trash2, Pencil } from "lucide-react";
 import { API_URL } from "../../../../../config/api";
+import { apiFetch } from "../../../../utils/apiFetch";
 import CreateConstituency from "./CreateConstituency";
 import ConstituencyManagement from "./ConstituencyManaging";
 
@@ -15,11 +16,8 @@ export default function ConstituenciesList({ election_id }) {
     try {
       setLoading(true);
 
-      const res = await fetch(
-        `${API_URL}/admins/elections/${election_id}/constituencies`,
-        {
-          credentials: "include",
-        },
+      const res = await apiFetch(
+        `/admins/elections/${election_id}/constituencies`,
       );
 
       const data = await res.json();
@@ -48,11 +46,10 @@ export default function ConstituenciesList({ election_id }) {
     if (!confirmDelete) return;
 
     try {
-      const res = await fetch(
-        `${API_URL}/admins/elections/${election_id}/constituencies/${constituency_id}`,
+      const res = await apiFetch(
+        `/admins/elections/${election_id}/constituencies/${constituency_id}`,
         {
           method: "DELETE",
-          credentials: "include",
         },
       );
 

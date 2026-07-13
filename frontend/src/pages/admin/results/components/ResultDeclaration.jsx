@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { AlertTriangle, X } from "lucide-react";
 import { API_URL } from "../../../../../config/api";
+import { apiFetch } from "../../../../utils/apiFetch";
 
 const ResultDeclaration = ({ election, constituency, isOpen, onClose }) => {
   const [loading, setLoading] = useState(false);
@@ -10,9 +11,8 @@ const ResultDeclaration = ({ election, constituency, isOpen, onClose }) => {
     try {
       setLoading(true);
 
-      const res = await fetch(`${API_URL}/results/declare-result`, {
+      const res = await apiFetch(`/results/declare-result`, {
         method: "POST",
-        credentials: "include",
         headers: {
           "Content-Type": "application/json",
         },

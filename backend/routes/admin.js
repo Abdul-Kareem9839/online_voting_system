@@ -27,6 +27,8 @@ const {
 const { loginLimiter } = require("../middlewares/rateLimiter");
 const { isAuthenticated, isAdmin } = require("../middlewares/auth");
 
+const { generateToken } = require("../utils/jwt");
+
 router.post("/login", loginLimiter, (req, res, next) => {
   passport.authenticate("admin-local", (err, admin, info) => {
     if (err) {
@@ -40,21 +42,22 @@ router.post("/login", loginLimiter, (req, res, next) => {
       });
     }
 
-    req.login(admin, (err) => {
-      if (err) {
-        return next(err);
-      }
+    const token = generateToken({
+      id: admin.admin_id,
+      role: "admin",
+      email: admin.email,
+    });
 
-      return res.status(200).json({
-        success: true,
-        message: "Admin login successful.",
-        user: {
-          admin_id: admin.admin_id,
-          username: admin.username,
-          email: admin.email,
-          role: admin.role,
-        },
-      });
+    return res.status(200).json({
+      success: true,
+      message: "Admin login successful.",
+      token,
+      user: {
+        admin_id: admin.admin_id,
+        username: admin.username,
+        email: admin.email,
+        role: admin.role,
+      },
     });
   })(req, res, next);
 });
@@ -160,10 +163,8 @@ router.get(
   async (req, res) => {
     try {
       const { election_id } = req.params;
-      console.log("election id", election_id);
 
       const election = await getElectionById(election_id);
-      console.log("Election", election);
 
       if (!election) {
         return res.status(404).json({
@@ -193,10 +194,8 @@ router.get(
   async (req, res) => {
     try {
       const { election_id } = req.params;
-      console.log(req.body);
       const election = await getElectionById(election_id);
       const constituencies = await getElectionConstituencies(election_id);
-      console.log(constituencies);
 
       const constituenciesWithStats = await Promise.all(
         constituencies.map(async (constituency) => {
@@ -260,7 +259,6 @@ router.get(
           };
         }),
       );
-      console.log(candidatesWithStats);
 
       res.status(200).json({
         success: true,

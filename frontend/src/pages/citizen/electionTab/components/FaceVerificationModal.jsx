@@ -1,8 +1,7 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { Camera, Loader2, ShieldCheck, CheckCircle2, X } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
-import { API_URL } from "../../../../../config/api";
-
+import { apiFetch } from "../../../../../utils/apiFetch";
 
 const FaceVerificationModal = ({
   onVerified,
@@ -84,19 +83,16 @@ const FaceVerificationModal = ({
         throw new Error("Unable to capture image.");
       }
 
-      const verifyRes = await fetch(
-        `${API_URL}/votes/verify-face`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            voter_id,
-            image,
-          }),
+      const verifyRes = await apiFetch(`/votes/verify-face`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
         },
-      );
+        body: JSON.stringify({
+          voter_id,
+          image,
+        }),
+      });
 
       const verifyData = await verifyRes.json();
 
@@ -108,7 +104,7 @@ const FaceVerificationModal = ({
         throw new Error("Face does not match. Vote cannot be submitted.");
       }
 
-      const voteRes = await fetch(`${API_URL}/votes`, {
+      const voteRes = await apiFetch(`/votes`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

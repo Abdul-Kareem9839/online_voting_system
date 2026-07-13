@@ -5,7 +5,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Camera, X, Check, Loader2 } from "lucide-react";
 import { API_URL } from "../../../../config/api";
 
-
 export default function FaceRegistration({ formData, errorMsg, setErrorMsg }) {
   const navigate = useNavigate();
   const webcamRef = useRef(null);
@@ -45,12 +44,14 @@ export default function FaceRegistration({ formData, errorMsg, setErrorMsg }) {
 
       const res = await fetch(`${API_URL}/voters/register`, {
         method: "POST",
-        credentials: "include",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
 
       const data = await res.json();
+      if (data.token) {
+        localStorage.setItem("token", data.token);
+      }
 
       if (!res.ok) throw new Error(data.message);
 

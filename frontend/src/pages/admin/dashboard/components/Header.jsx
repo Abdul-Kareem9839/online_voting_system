@@ -10,10 +10,7 @@ export default function Header({ adminData }) {
 
   const handleLogout = async () => {
     try {
-      await fetch(`${API_URL}/auth/logout`, {
-        method: "POST",
-        credentials: "include",
-      });
+      localStorage.removeItem("token");
       navigate("/admins/login");
     } catch (err) {
       console.error(err);

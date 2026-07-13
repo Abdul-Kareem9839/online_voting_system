@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { ArrowLeft, Trophy, CheckCircle } from "lucide-react";
 import { API_URL } from "../../../../../config/api";
+import { apiFetch } from "../../../../utils/apiFetch";
 import ResultDeclaration from "./ResultDeclaration";
 import CandidateRanking from "./CandidateRanking";
 import VoteDistribution from "./VoteDistribution";
@@ -12,9 +13,8 @@ const ConstituencyResult = ({ election, constituency, onBack }) => {
 
   const fetchCandidates = async () => {
     try {
-      const res = await fetch(
-        `${API_URL}/admins/elections/${election.election_id}/constituencies/${constituency.constituency_id}/candidates`,
-        { credentials: "include" },
+      const res = await apiFetch(
+        `/admins/elections/${election.election_id}/constituencies/${constituency.constituency_id}/candidates`,
       );
 
       const data = await res.json();

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { API_URL } from "../../../../config/api";
+import { apiFetch } from "../../../../utils/apiFetch";
 import LiveElectionCard from "./components/LiveElectionCard";
 import UpcomingElectionCard from "./components/UpcomingElectionCard";
 import VotingInterface from "./components/VotingInterface";
@@ -18,9 +18,7 @@ const ElectionsTab = () => {
 
   const loadElectionData = async () => {
     try {
-      const response = await fetch(`${API_URL}/voters/dashboard/electionTab`, {
-        credentials: "include",
-      });
+      const response = await apiFetch(`/voters/dashboard/electionTab`);
 
       const fetchedPayload = await response.json();
 

@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
 import { CheckCircle } from "lucide-react";
 import { API_URL } from "../../../../config/api";
+import { apiFetch } from "../../../utils/apiFetch";
 import ElectionResults from "./components/ElectionResults";
 import ConstituencyResult from "./components/ConstituencyResult";
 import ElectionCard from "./components/ElectionCard";
@@ -14,9 +15,7 @@ const ResultsTab = () => {
   useEffect(() => {
     const fetchElections = async () => {
       try {
-        const res = await fetch(`${API_URL}/admins/elections`, {
-          credentials: "include",
-        });
+        const res = await apiFetch(`/admins/elections`);
         const data = await res.json();
 
         if (!res.ok) {
