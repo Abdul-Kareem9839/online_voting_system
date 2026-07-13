@@ -1,5 +1,6 @@
 const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
+const bcrypt = require("bcrypt");
 const db = require("../config/database");
 const otpStore = require("../utils/otpStore");
 const { getVoterByEmail, getVoterById } = require("../models/Voter");
@@ -39,7 +40,9 @@ passport.use(
           });
         }
 
-        if (password !== admin.password) {
+        // Use bcrypt to compare passwords
+        const passwordMatch = await bcrypt.compare(password, admin.password);
+        if (!passwordMatch) {
           return done(null, false, {
             message: "Invalid password",
           });

@@ -1,14 +1,18 @@
 const db = require("../config/database");
+const bcrypt = require("bcrypt");
 
 // Create admin
 async function createAdmin(data) {
   const { username, email, password } = data;
 
+  // Hash password with bcrypt
+  const hashedPassword = await bcrypt.hash(password, 10);
+
   const [result] = await db.query(
     `INSERT INTO admin
     ( username, email, password)
      VALUES ( ?, ?, ?)`,
-    [username, password, email],
+    [username, email, hashedPassword],
   );
 
   return result.insertId;
