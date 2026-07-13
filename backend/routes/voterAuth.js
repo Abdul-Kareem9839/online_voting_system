@@ -19,6 +19,7 @@ const {
   validateRegister,
   validateVerifyFace,
   validateLoginSendOtp,
+  validateLoginVerifyOtp,
 } = require("../middlewares/validation");
 
 const {
@@ -62,7 +63,7 @@ router.post(
 router.post(
   "/login/verify-otp",
   verifyOtpLimiter,
-  validateVerifyOtp,
+  validateLoginVerifyOtp,
   loginVerifyOtp(passport),
 );
 

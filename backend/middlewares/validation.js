@@ -65,10 +65,27 @@ const validateSendOtp = (req, res, next) => {
 const validateVerifyOtp = (req, res, next) => {
   const { email, election_id, otp } = req.body;
 
-  if (!email || !election_id || !otp) {
+  if (!email || !otp) {
     return res.status(400).json({
       success: false,
-      message: "Email, Election ID and OTP are required.",
+      message: "Email and OTP are required.",
+    });
+  }
+
+  if (!election_id) {
+    return next();
+  }
+
+  next();
+};
+
+const validateLoginVerifyOtp = (req, res, next) => {
+  const { email, otp } = req.body;
+
+  if (!email || !otp) {
+    return res.status(400).json({
+      success: false,
+      message: "Email and OTP are required.",
     });
   }
 
@@ -122,4 +139,5 @@ module.exports = {
   validateRegister,
   validateVerifyFace,
   validateLoginSendOtp,
+  validateLoginVerifyOtp,
 };
