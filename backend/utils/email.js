@@ -1,8 +1,8 @@
-const transporter = require("../config/mail");
+const { sendMail } = require("../config/mail");
 
 async function sendOtpEmail(email, otp) {
-  await transporter.sendMail({
-    from: process.env.EMAIL_USER,
+  const result = await sendMail({
+    from: process.env.EMAIL_FROM || process.env.RESEND_FROM_EMAIL,
     to: email,
     subject: "Voting System OTP",
     html: `
@@ -11,7 +11,19 @@ async function sendOtpEmail(email, otp) {
       <h1>${otp}</h1>
       <p>This OTP will expire in 5 minutes.</p>
     `,
+    text: `Your OTP is ${otp}`,
   });
+
+  if (!result.delivered) {
+    return {
+      delivered: false,
+      reason: "send_failed",
+      otp,
+      message: result.message,
+    };
+  }
+
+  return { delivered: true, otp, id: result.id };
 }
 
 const electionLabels = {
@@ -57,8 +69,8 @@ const sendInvitationEmail = async (
   const { idLabel, message } =
     electionLabels[electionType] || electionLabels.default;
 
-  await transporter.sendMail({
-    from: process.env.EMAIL_USER,
+  const result = await sendMail({
+    from: process.env.EMAIL_FROM || process.env.RESEND_FROM_EMAIL,
     to: email,
     subject: "You are invited to vote — Action Required",
     html: `
@@ -94,7 +106,12 @@ const sendInvitationEmail = async (
 
       </div>
     `,
+    text: `You have been invited to vote. Use the registration link provided in the email.`,
   });
+
+  if (!result.delivered) {
+    throw new Error(result.message || "Invitation email delivery failed");
+  }
 };
 
 const sendResultDeclaredEmail = async ({
@@ -106,8 +123,8 @@ const sendResultDeclaredEmail = async ({
   total_votes_cast,
   winning_margin,
 }) => {
-  await transporter.sendMail({
-    from: process.env.EMAIL_USER,
+  const result = await sendMail({
+    from: process.env.EMAIL_FROM || process.env.RESEND_FROM_EMAIL,
     to: email,
     subject: `Election Result Declared for ${constituency_name}`,
     html: `
@@ -124,7 +141,12 @@ const sendResultDeclaredEmail = async ({
         <p style="color:#6b7280; font-size:13px; margin-top:30px;">This is an automated notification from the voting system.</p>
       </div>
     `,
+    text: `Election result declared for ${constituency_name}.`,
   });
+
+  if (!result.delivered) {
+    throw new Error(result.message || "Result email delivery failed");
+  }
 };
 
 module.exports = { sendOtpEmail, sendInvitationEmail, sendResultDeclaredEmail };
