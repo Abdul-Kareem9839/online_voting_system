@@ -7,7 +7,9 @@ const poolConfig = process.env.DATABASE_URL
       waitForConnections: true,
       connectionLimit: 10,
       queueLimit: 0,
-      ssl: process.env.DB_CA_CERT ? { ca: process.env.DB_CA_CERT } : undefined,
+      ssl: process.env.DB_CA_CERT
+        ? { ca: process.env.DB_CA_CERT.replace(/\\n/g, "\n") }
+        : undefined,
     }
   : {
       host: process.env.DB_HOST || "localhost",
@@ -18,7 +20,9 @@ const poolConfig = process.env.DATABASE_URL
       waitForConnections: true,
       connectionLimit: 10,
       queueLimit: 0,
-      ssl: process.env.DB_CA_CERT ? { ca: process.env.DB_CA_CERT } : undefined,
+      ssl: process.env.DB_CA_CERT
+        ? { ca: process.env.DB_CA_CERT.replace(/\\n/g, "\n") }
+        : undefined,
     };
 
 const pool = mysql.createPool(poolConfig);
