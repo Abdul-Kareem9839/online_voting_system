@@ -78,11 +78,19 @@ passport.use(
         });
       }
 
-      const record = otpStore.get(email);
+      const otpKey = `${email}`;
+      const record = otpStore.get(otpKey);
 
       if (!record) {
         return done(null, false, {
           message: "OTP not found",
+        });
+      }
+
+      if (Date.now() > record.expiresAt) {
+        otpStore.delete(otpKey);
+        return done(null, false, {
+          message: "OTP has expired",
         });
       }
 
@@ -92,7 +100,7 @@ passport.use(
         });
       }
 
-      otpStore.delete(email);
+      otpStore.delete(otpKey);
 
       return done(null, voter);
     },
