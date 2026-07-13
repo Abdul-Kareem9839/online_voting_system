@@ -4,6 +4,8 @@ require("./config/database");
 const { initializeDatabase } = require("./config/initDatabase");
 
 const express = require("express");
+const fs = require("fs");
+const path = require("path");
 const app = express();
 const cors = require("cors");
 const morgan = require("morgan");
@@ -57,6 +59,18 @@ app.use("/api/admins/elections", ElectionRouter);
 
 app.use("/voters", VoterRouter);
 app.use("/voters", voterAuthRouter);
+
+const staticPath = path.join(__dirname, "../frontend/dist");
+if (process.env.NODE_ENV === "production" && fs.existsSync(staticPath)) {
+  app.use(express.static(staticPath));
+
+  app.get("*", (req, res, next) => {
+    if (req.path.startsWith("/api")) {
+      return next();
+    }
+    res.sendFile(path.join(staticPath, "index.html"));
+  });
+}
 
 app.use((err, req, res, next) => {
   console.error("🔥 Global Error Caught:", err.message, err.stack);

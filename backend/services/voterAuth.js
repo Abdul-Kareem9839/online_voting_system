@@ -1,6 +1,5 @@
 const { getElectionStatus } = require("../models/functions");
 const voterAuthModel = require("../models/VoterAuth");
-const transporter = require("../config/mail");
 const otpStore = require("../utils/otpStore");
 const { generateOtp, saveOtp } = require("../utils/otp");
 const { sendOtpEmail } = require("../utils/email");
@@ -77,12 +76,16 @@ const sendOtp = async (email, voterId, electionId) => {
     expiresAt: Date.now() + 5 * 60 * 1000,
   });
 
-  await transporter.sendMail({
-    from: process.env.EMAIL_USER,
-    to: email,
-    subject: "Online Voting System - Registration OTP",
-    text: `Your OTP is ${otp}. It is valid for 5 minutes.`,
-  });
+  try {
+    await sendOtpEmail(email, otp);
+  } catch (err) {
+    console.error("OTP email delivery failed:", err.message);
+    return {
+      status: 500,
+      success: false,
+      message: "Unable to send OTP email right now. Please try again later.",
+    };
+  }
 
   return {
     status: 200,

@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { CheckCircle2, Camera, Lock } from "lucide-react";
-import flowImage from "../../../assets/Integrity.png";
+import flowImage from "../../../assets/Integrity.webp";
 
 const container = {
   hidden: {},
@@ -75,6 +75,8 @@ export default function HeroSection() {
             <img
               src={flowImage}
               alt="Election integrity"
+              loading="lazy"
+              decoding="async"
               className="w-full max-w-[340px] h-auto mx-auto object-contain"
             />
 
