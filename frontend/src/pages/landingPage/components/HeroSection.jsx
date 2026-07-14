@@ -32,7 +32,7 @@ export default function HeroSection() {
       variants={container}
       initial="hidden"
       animate="show"
-      className="grid md:grid-cols-12 gap-12 items-end"
+      className="grid md:grid-cols-12 gap-12 items-end pt-24 md:pt-10 pb-16 md:pb-24 max-w-6xl mx-auto"
     >
       {/* Left Content */}
       <div className="md:col-span-8">
