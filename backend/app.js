@@ -1,4 +1,3 @@
-// Load environment variables immediately
 require("dotenv").config();
 require("./config/database");
 const { initializeDatabase } = require("./config/initDatabase");
@@ -73,7 +72,7 @@ if (process.env.NODE_ENV === "production" && fs.existsSync(staticPath)) {
 }
 
 app.use((err, req, res, next) => {
-  console.error("🔥 Global Error Caught:", err.message, err.stack);
+  console.error(" Global Error Caught:", err.message, err.stack);
   res.status(err.status || 500).json({
     success: false,
     error:

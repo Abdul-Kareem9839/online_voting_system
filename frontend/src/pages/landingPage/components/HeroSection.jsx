@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { CheckCircle2, Camera, Lock } from "lucide-react";
-import flowImage from "../../../assets/Integrity.webp";
+import flowImage from "../../../assets/Integrity.png";
 
 const container = {
   hidden: {},

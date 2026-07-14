@@ -3,7 +3,7 @@ const LocalStrategy = require("passport-local").Strategy;
 const bcrypt = require("bcrypt");
 const db = require("../config/database");
 const otpStore = require("../utils/otpStore");
-const { getVoterByEmail, getVoterById } = require("../models/Voter");
+const { getVoterByEmail } = require("../models/Voter");
 
 passport.use(
   "admin-local",

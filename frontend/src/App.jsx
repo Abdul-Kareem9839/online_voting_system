@@ -11,12 +11,6 @@ const VoterDashboard = lazy(() => import("./pages/citizen/VoterDashboard.jsx"));
 const AdminDashboard = lazy(
   () => import("./pages/admin/dashboard/AdminDashboard.jsx"),
 );
-const AddCandidate = lazy(
-  () => import("./pages/admin/electionsTab/candidates/AddCandidate.jsx"),
-);
-const CandidatesList = lazy(
-  () => import("./pages/admin/electionsTab/candidates/CandidatesList.jsx"),
-);
 const VotingInterface = lazy(
   () => import("./pages/citizen/electionTab/components/VotingInterface.jsx"),
 );
@@ -38,14 +32,6 @@ function App() {
           <Route path="/voters/dashboard" element={<VoterDashboard />} />
           <Route path="/admins/login" element={<AdminLogin />} />
           <Route path="/admins/dashboard" element={<AdminDashboard />} />
-          <Route
-            path="/admins/elections/:election_id/constituencies/:constituency_id/candidates/create"
-            element={<AddCandidate />}
-          />
-          <Route
-            path="/admins/elections/:election_id/constituencies/:constituency_id/candidates"
-            element={<CandidatesList />}
-          />
           <Route path="vote/:election_id" element={<VotingInterface />} />
         </Routes>
       </Suspense>

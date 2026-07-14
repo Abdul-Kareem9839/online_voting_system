@@ -9,7 +9,6 @@ import {
 } from "lucide-react";
 
 const OverviewTab = ({ data }) => {
-  console.log("overviewTab:", data);
   if (!data || !data.voter) {
     return (
       <div className="dashboard-card p-6 text-center">
